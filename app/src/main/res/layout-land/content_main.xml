@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:paddingTop="?attr/actionBarSize" >
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_library"
+        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="15dp"
+        android:orientation="vertical"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardBackgroundColor="@color/colorPrimary" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:paddingVertical="40dp">
+
+            <ImageView
+                android:id="@+id/imageLibrary"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:contentDescription="Library"
+                android:gravity="center"
+                android:src="@drawable/ic_library_books" />
+
+            <TextView
+                android:id="@+id/button_library"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorWhite"
+                android:text="Library" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_learning_progress"
+        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="30dp"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardBackgroundColor="@color/colorPrimary" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:paddingVertical="40dp">
+
+            <ImageView
+                android:id="@+id/imageLearningProgress"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:contentDescription="Library"
+                android:gravity="center"
+                android:src="@drawable/ic_show_chart" />
+
+            <TextView
+                android:id="@+id/button_learning_progress"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorWhite"
+                android:text="Learning Progress" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

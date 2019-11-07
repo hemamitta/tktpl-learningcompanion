@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Learning Companion</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="learning_progress">Learning Progress</string>
+    <string name="library">Library</string>
+    <string name="addCourse">Add Course</string>
+    <string name="account">Account</string>
+    <string name="targetMinutesPerWeek">Target minutes per week</string>
+    <string name="courseName">Course Name</string>
+    <string name="save">Save</string>
+    <string name="targetTimeWords">Your target study time per week:</string>
+    <string name="totalTimeWords">Your total study time this week:</string>
+    <string name="progressTimeWords">Your progress:</string>
+    <string name="startStudy">START STUDYING</string>
+</resources>
