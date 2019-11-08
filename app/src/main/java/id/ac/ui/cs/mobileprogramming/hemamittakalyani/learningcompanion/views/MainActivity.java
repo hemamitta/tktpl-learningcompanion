@@ -66,6 +66,11 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    private void launchAccount() {
+        Intent intent = new Intent(this, AccountActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -104,7 +109,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         else if (id == R.id.nav_account) {
-
+            if (!toolbar.getTitle().equals("Account")) {
+                launchAccount();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

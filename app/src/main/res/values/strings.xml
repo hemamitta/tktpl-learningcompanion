@@ -13,4 +13,5 @@
     <string name="totalTimeWords">Your total study time this week:</string>
     <string name="progressTimeWords">Your progress:</string>
     <string name="startStudy">START STUDYING</string>
+    <string name="quote">"Never stop learning, because life never stops teaching."</string>
 </resources>

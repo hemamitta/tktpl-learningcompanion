@@ -13,11 +13,13 @@ import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.reposito
 public class CourseViewModel extends AndroidViewModel {
     private CourseRepository repository;
     private LiveData<List<Course>> allCourses;
+    private int numOfCourses;
 
     public CourseViewModel(@NonNull Application application) {
         super(application);
         repository = new CourseRepository(application);
         allCourses = repository.getAllCourses();
+        numOfCourses = repository.getNumCourse();
     }
 
     public void insert(Course course) {
@@ -30,5 +32,9 @@ public class CourseViewModel extends AndroidViewModel {
 
     public LiveData<List<Course>> getAllCourses() {
         return allCourses;
+    }
+
+    public int getNumOfCourses() {
+        return numOfCourses;
     }
 }

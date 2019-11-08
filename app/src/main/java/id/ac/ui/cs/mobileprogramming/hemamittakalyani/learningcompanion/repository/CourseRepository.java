@@ -20,6 +20,10 @@ public class CourseRepository {
         allCourses = courseDao.getAllCourses();
     }
 
+    public int getNumCourse() {
+        return courseDao.getCountCourse();
+    }
+
     public void insert(Course course) {
         new InsertCourseAsyncTask(courseDao).execute(course);
     }
