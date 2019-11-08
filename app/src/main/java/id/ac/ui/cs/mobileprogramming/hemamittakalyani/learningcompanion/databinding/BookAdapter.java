@@ -7,19 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.R;
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.data.entity.Book;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
-    private List<Book> books = new ArrayList<>();
-    // private OnItemClickListener listener;
+    private List<Book> books;
+    private OnItemClickListener listener;
 
-
-    public BookAdapter(List<Book> books) {
+    public BookAdapter(List<Book> books, OnItemClickListener listener) {
         this.books = books;
+        this.listener = listener;
     }
 
     @NonNull
@@ -34,6 +33,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
     public void onBindViewHolder(@NonNull BookHolder holder, int position) {
         Book currentBook = books.get(position);
         holder.textViewTitle.setText(currentBook.getTitle());
+        holder.bind(books.get(position), listener);
     }
 
     @Override
@@ -48,13 +48,21 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookHolder> {
             super(itemView);
             textViewTitle = itemView.findViewById(R.id.book_item_title);
         }
+
+        public void bind(final Book book, final OnItemClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(book);
+                }
+            });
+        }
     }
 
-//    public interface OnItemClickListener {
-//        void onItemClick(Book book);
-//    }
-//
-//    public void setOnItemClickListener(OnItemClickListener listener) {
-//        this.listener = listener;
-//    }
+    public interface OnItemClickListener {
+        void onItemClick(Book book);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 }

@@ -41,7 +41,7 @@ public class AddCourseActivity extends AppCompatActivity {
         String targetMin = editTextTargetMinute.getText().toString();
 
         if (courseName.trim().isEmpty() || targetMin.trim().isEmpty()) {
-            Toast.makeText(this, "Please fill all the field", Toast.LENGTH_SHORT);
+            Toast.makeText(AddCourseActivity.this, "Please fill all the field", Toast.LENGTH_SHORT);
             return;
         }
 
