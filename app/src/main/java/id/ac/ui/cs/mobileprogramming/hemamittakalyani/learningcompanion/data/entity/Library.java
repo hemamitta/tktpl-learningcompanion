@@ -3,10 +3,11 @@ package id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.data.en
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-
-import org.json.JSONObject;
+import android.arch.persistence.room.TypeConverters;
 
 import java.util.List;
+
+import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views.BookTypeConverter;
 
 @Entity(tableName = "library_table")
 public class Library {
@@ -17,10 +18,11 @@ public class Library {
     @ColumnInfo(name = "libraryName")
     private String libraryName;
 
+    @TypeConverters(BookTypeConverter.class)
     @ColumnInfo(name = "bookList")
-    private List<JSONObject> bookList;
+    private List<Book> bookList;
 
-    public Library(String libraryName, List<JSONObject> bookList) {
+    public Library(String libraryName, List<Book> bookList) {
         this.libraryName = libraryName;
         this.bookList = bookList;
     }
@@ -41,11 +43,11 @@ public class Library {
         this.libraryName = libraryName;
     }
 
-    public List<JSONObject> getBookList() {
+    public List<Book> getBookList() {
         return bookList;
     }
 
-    public void setBookList(List<JSONObject> bookList) {
+    public void setBookList(List<Book> bookList) {
         this.bookList = bookList;
     }
 }

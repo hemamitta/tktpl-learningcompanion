@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.data.dao.LibraryDao;
+import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.data.entity.Book;
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.data.entity.Library;
 
 @Database(entities = {Library.class}, version = 1, exportSchema = false)
@@ -52,29 +53,18 @@ public abstract class LibraryDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-          JSONObject daa1 = new JSONObject();
-          try {
-              daa1.put("title", "CLRS. (2009). Introduction to Algorithms");
-              daa1.put("imageUrl", "image");
-              daa1.put("pdfUrl", "pdf");
-          }
-          catch (JSONException e) {
-              e.printStackTrace();
-          }
+          Book daa_book_1 = new Book("CLRS. (2009). Introduction to Algorithms (Third Edition)",
+                  "https://p.calameoassets.com/110901104257-f47e4def8b758fe722071ee0c0afdfb6/p1.jpg",
+                  "http://kddlab.zjgsu.edu.cn:7200/students/lipengcheng/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA%EF%BC%88%E8%8B%B1%E6%96%87%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89.pdf"
+          );
 
-          JSONObject daa2 = new JSONObject();
-          try {
-              daa1.put("title", "Erickson, J. (2019). Algorithm");
-              daa1.put("imageUrl", "Erickson, J. (2019). Algorithm");
-              daa1.put("pdfUrl", "Erickson, J. (2019). Algorithm");
-          }
-          catch (JSONException e) {
-              e.printStackTrace();
-          }
+          Book daa_book_2 = new Book("Erickson, J. (2019). Algorithm",
+                  "http://jeffe.cs.illinois.edu/teaching/algorithms/FrontCover.png",
+                  "http://jeffe.cs.illinois.edu/teaching/algorithms/book/Algorithms-JeffE.pdf");
 
-          List<JSONObject> daaBookList = new ArrayList<JSONObject>();
-          daaBookList.add(daa1);
-          daaBookList.add(daa2);
+          List<Book> daaBookList = new ArrayList<Book>();
+          daaBookList.add(daa_book_1);
+          daaBookList.add(daa_book_2);
 
           libraryDao.insert(new Library("Design and Analytics Algorithm", daaBookList));
           return null;
