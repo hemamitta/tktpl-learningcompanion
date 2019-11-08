@@ -14,12 +14,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import java.io.Serializable;
 import java.util.List;
 
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.R;
-import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.data.entity.Course;
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.data.entity.Library;
-import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.databinding.CourseAdapter;
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.databinding.LibraryAdapter;
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.viewmodel.LibraryViewModel;
 
@@ -67,6 +66,7 @@ public class LibraryActivity extends MainActivity {
                 Intent intent = new Intent(LibraryActivity.this, LibraryDetailActivity.class);
                 intent.putExtra(LibraryDetailActivity.EXTRA_LIBRARY_ID, library.getLibraryId());
                 intent.putExtra(LibraryDetailActivity.EXTRA_LIBRARY_NAME, library.getLibraryName());
+                intent.putExtra(LibraryDetailActivity.EXTRA_BOOK_LIST, (Serializable) library.getBookList());
                 startActivityForResult(intent, 1);
             }
         });
