@@ -23,7 +23,4 @@ public interface CourseDao {
 
     @Query("SELECT * FROM course_table")
     LiveData<List<Course>> getAllCourses();
-
-    @Query("SELECT COUNT(courseId) FROM course_table")
-    int getCountCourse();
 }

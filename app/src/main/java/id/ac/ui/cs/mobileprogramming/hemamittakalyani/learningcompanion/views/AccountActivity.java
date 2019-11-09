@@ -4,8 +4,10 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -15,7 +17,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.Parcelable;
+import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
@@ -24,17 +28,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.IGreetingService;
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.R;
-import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.viewmodel.CourseViewModel;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -46,6 +54,10 @@ public class AccountActivity extends MainActivity {
     Bitmap selectedImage;
     CircleImageView imageView;
     SharedPreferences.Editor prefsEditor;
+    EditText name;
+    TextView greetingResult;
+    String userName;
+    String res;
 
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
@@ -54,10 +66,39 @@ public class AccountActivity extends MainActivity {
     private final static int ALL_PERMISSIONS_RESULT = 107;
     private final static int IMAGE_RESULT = 200;
 
+    IGreetingService service;
+    AddServiceConnection connection;
+
+    class AddServiceConnection implements ServiceConnection {
+
+        public void onServiceConnected(ComponentName name, IBinder boundService) {
+            service = IGreetingService.Stub.asInterface((IBinder) boundService);
+            Toast.makeText(AccountActivity.this, "Service connected", Toast.LENGTH_LONG).show();
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            service = null;
+            Toast.makeText(AccountActivity.this, "Service Disconnected", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void onClickSaveName() {
+        try {
+            res = service.generateGreeting(userName);
+        }
+        catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        greetingResult.setText(res);
+        Toast.makeText(AccountActivity.this, "hehe", Toast.LENGTH_LONG).show();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        initService();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Account");
         setSupportActionBar(toolbar);
@@ -71,7 +112,7 @@ public class AccountActivity extends MainActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fabImage);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +144,17 @@ public class AccountActivity extends MainActivity {
             }
         }
 
+        Button saveName = (Button) findViewById(R.id.saveName);
+        saveName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickSaveName();
+            }
+        });
+        name = (EditText) findViewById(R.id.ed_name);
+        greetingResult = (TextView) findViewById(R.id.greetingResult);
+        userName = name.getText().toString();
+        res = "Hello";
     }
 
     @Override
@@ -111,6 +163,7 @@ public class AccountActivity extends MainActivity {
         if (selectedImage != null) {
             selectedImage.recycle();
         }
+        releaseService();
     }
 
     public Intent getPickImageChooserIntent() {
@@ -280,5 +333,17 @@ public class AccountActivity extends MainActivity {
                 }
                 break;
         }
+    }
+
+    private void initService() {
+        connection = new AddServiceConnection();
+        Intent i = new Intent();
+        i.setClassName("id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion", id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views.GreetingService.class.getName());
+        bindService(i, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    private void releaseService() {
+        unbindService(connection);
+        connection = null;
     }
 }
