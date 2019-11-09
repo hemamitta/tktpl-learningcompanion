@@ -2,7 +2,6 @@ package id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,18 +20,15 @@ import android.os.IBinder;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,10 +63,7 @@ public class AccountActivity extends MainActivity {
     private final static int IMAGE_RESULT = 200;
 
     IGreetingService service;
-    AddServiceConnection connection;
-
-    class AddServiceConnection implements ServiceConnection {
-
+    private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName name, IBinder boundService) {
             service = IGreetingService.Stub.asInterface((IBinder) boundService);
             Toast.makeText(AccountActivity.this, "Service connected", Toast.LENGTH_LONG).show();
@@ -80,7 +73,7 @@ public class AccountActivity extends MainActivity {
             service = null;
             Toast.makeText(AccountActivity.this, "Service Disconnected", Toast.LENGTH_LONG).show();
         }
-    }
+    };
 
     public void onClickSaveName() {
         try {
@@ -256,27 +249,22 @@ public class AccountActivity extends MainActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putParcelable("pic_uri", picUri);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
-        // get the file url
         picUri = savedInstanceState.getParcelable("pic_uri");
     }
 
     private ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {
         ArrayList<String> result = new ArrayList<String>();
-
         for (String perm : wanted) {
             if (!hasPermission(perm)) {
                 result.add(perm);
             }
         }
-
         return result;
     }
 
@@ -336,9 +324,8 @@ public class AccountActivity extends MainActivity {
     }
 
     private void initService() {
-        connection = new AddServiceConnection();
-        Intent i = new Intent();
-        i.setClassName("id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion", id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views.GreetingService.class.getName());
+        Intent i = new Intent(id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views.GreetingService.class.getName());
+        i.setPackage("id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views");
         bindService(i, connection, Context.BIND_AUTO_CREATE);
     }
 
