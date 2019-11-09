@@ -51,7 +51,7 @@ public class AccountActivity extends MainActivity {
     CircleImageView imageView;
     SharedPreferences.Editor prefsEditor;
     EditText name;
-    TextView greetingResult;
+    TextView greetingText;
     String userName;
     String res;
 
@@ -65,25 +65,25 @@ public class AccountActivity extends MainActivity {
     IGreetingService service;
     private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName name, IBinder boundService) {
-            service = IGreetingService.Stub.asInterface((IBinder) boundService);
+            service = IGreetingService.Stub.asInterface(boundService);
             Toast.makeText(AccountActivity.this, "Service connected", Toast.LENGTH_LONG).show();
         }
 
         public void onServiceDisconnected(ComponentName name) {
-            service = null;
-            Toast.makeText(AccountActivity.this, "Service Disconnected", Toast.LENGTH_LONG).show();
+
         }
     };
 
     public void onClickSaveName() {
-        try {
-            res = service.generateGreeting(userName);
+        if (service != null) {
+            try {
+                res = service.generateGreeting(userName);
+            }
+            catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
-        catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        greetingResult.setText(res);
-        Toast.makeText(AccountActivity.this, "hehe", Toast.LENGTH_LONG).show();
+        greetingText.setText(res);
     }
 
     @Override
@@ -92,17 +92,17 @@ public class AccountActivity extends MainActivity {
         setContentView(R.layout.activity_account);
         initService();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Account");
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         FloatingActionButton fab = findViewById(R.id.fabImage);
@@ -137,17 +137,17 @@ public class AccountActivity extends MainActivity {
             }
         }
 
-        Button saveName = (Button) findViewById(R.id.saveName);
+        Button saveName = findViewById(R.id.saveName);
         saveName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickSaveName();
             }
         });
-        name = (EditText) findViewById(R.id.ed_name);
-        greetingResult = (TextView) findViewById(R.id.greetingResult);
+        name = findViewById(R.id.ed_name);
         userName = name.getText().toString();
-        res = "Hello";
+
+        greetingText = findViewById(R.id.greetingText);
     }
 
     @Override
@@ -156,7 +156,10 @@ public class AccountActivity extends MainActivity {
         if (selectedImage != null) {
             selectedImage.recycle();
         }
-        releaseService();
+        if (service != null) {
+            service = null;
+        }
+
     }
 
     public Intent getPickImageChooserIntent() {
@@ -259,7 +262,7 @@ public class AccountActivity extends MainActivity {
     }
 
     private ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         for (String perm : wanted) {
             if (!hasPermission(perm)) {
                 result.add(perm);
@@ -324,9 +327,8 @@ public class AccountActivity extends MainActivity {
     }
 
     private void initService() {
-        Intent i = new Intent(id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views.GreetingService.class.getName());
-        i.setPackage("id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views");
-        bindService(i, connection, Context.BIND_AUTO_CREATE);
+        Intent i = new Intent(this, id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views.GreetingService.class);
+        getApplicationContext().bindService(i, connection, Context.BIND_AUTO_CREATE);
     }
 
     private void releaseService() {
