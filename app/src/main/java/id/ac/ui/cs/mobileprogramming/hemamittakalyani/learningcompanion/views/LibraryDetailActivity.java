@@ -47,7 +47,7 @@ public class LibraryDetailActivity extends AppCompatActivity  {
     private final Handler toastHandlerSuccess = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Toast.makeText(getApplicationContext(), "Download complete. Download URI: " + path, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Download file is in " + path, Toast.LENGTH_LONG).show();
         }
     };
 
@@ -85,10 +85,10 @@ public class LibraryDetailActivity extends AppCompatActivity  {
         bookList = ((List<Book>) getIntent().getExtras().getSerializable(EXTRA_BOOK_LIST));
 
         setTitle(libraryName);
-        scrollView = (ScrollView) findViewById(R.id.activity_library_detail);
+        scrollView = findViewById(R.id.activity_library_detail);
 
         // List of Book
-        recyclerView = (RecyclerView) findViewById(R.id.book_recycler_view);
+        recyclerView = findViewById(R.id.book_recycler_view);
         adapter = new BookAdapter(bookList, new BookAdapter.OnItemClickListener() {
             @Override public void onItemClick(Book book) {
                 onClickDownload(book);
@@ -125,13 +125,12 @@ public class LibraryDetailActivity extends AppCompatActivity  {
     }
 
     public void proceedDownload(Book book) {
-        String title = book.getTitle().replaceAll("\\s+","");
+        String title = book.getTitle().replaceAll("\\s+","") + ".pdf";
         String pdfUrl = book.getPdfUrl();
 
         Intent intent = new Intent(this, DownloadService.class);
         intent.putExtra(DownloadService.FILENAME, title);
-        intent.putExtra(DownloadService.URL,
-                pdfUrl);
+        intent.putExtra(DownloadService.URL, pdfUrl);
         startService(intent);
         Toast.makeText(LibraryDetailActivity.this, "Download is starting...", Toast.LENGTH_LONG).show();
     }

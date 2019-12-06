@@ -3,12 +3,11 @@ package id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.ResultReceiver;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
@@ -26,16 +25,14 @@ public class CourseProgressActivity extends AppCompatActivity implements View.On
             "id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views.EXTRA_TOTAL_TIME";
 
     Button start, stop, saveProgress;
-
-    TextView counterText, stopText, progressTimeText;
-    MyResultReceiver resultReceiver;
-    Intent intentTimer;
-
+    TextView stopWatch, progressTimeText;
     String courseName;
-    int targetSecond;
-    int targetMinute;
-    int totalTime;
+    int targetSecond, targetMinute, totalTime;
     double totalTimeMinute;
+
+    long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L ;
+    Handler handler;
+    int Seconds, Minutes, MilliSeconds ;
 
     DecimalFormat df = new DecimalFormat("#.###");
 
@@ -44,15 +41,14 @@ public class CourseProgressActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_progress);
 
-        TextView targetTimeView = (TextView) findViewById (R.id.targetTime);
-        TextView totalTimeView = (TextView) findViewById (R.id.totalTime);
+        TextView targetTimeView = findViewById (R.id.targetTime);
+        TextView totalTimeView = findViewById (R.id.totalTime);
 
         Intent intentCourse = getIntent();
         courseName = intentCourse.getStringExtra(EXTRA_COURSE_NAME);
 
         targetSecond = intentCourse.getIntExtra(EXTRA_TARGET_TIME, 9000);
-        targetMinute = (Integer) targetSecond / 60;
-
+        targetMinute = targetSecond / 60;
 
         totalTime = intentCourse.getIntExtra(EXTRA_TOTAL_TIME, 0);
         totalTimeMinute = totalTime / 60.00;
@@ -69,86 +65,57 @@ public class CourseProgressActivity extends AppCompatActivity implements View.On
         stop.setOnClickListener(this);
         saveProgress.setOnClickListener(this);
 
-        resultReceiver = new MyResultReceiver(null);
-        counterText = findViewById(R.id.counterText);
-        stopText = findViewById(R.id.stopText);
+        stopWatch = findViewById(R.id.stopWatch);
         progressTimeText = findViewById(R.id.progressTime);
 
-        stopText.setText("If your timer has started, click 'START' to show the time. This will not restart your timer." );
         double progressInt = (totalTime * 1.0 / targetSecond * 1.0) * 100.0;
         progressTimeText.setText(df.format(progressInt) + "%");
+
+        handler = new Handler() ;
     }
+
+    public Runnable runnable = new Runnable() {
+        public void run() {
+            MillisecondTime = SystemClock.uptimeMillis() - StartTime;
+            UpdateTime = TimeBuff + MillisecondTime;
+            Seconds = (int) (UpdateTime / 1000);
+            Minutes = Seconds / 60;
+            Seconds = Seconds % 60;
+            MilliSeconds = (int) (UpdateTime % 1000);
+            stopWatch.setText("" + Minutes + ":"
+                    + String.format("%02d", Seconds) + ":"
+                    + String.format("%03d", MilliSeconds));
+            handler.postDelayed(this, 0);
+        }
+    };
 
     @Override
     public void onClick(View v) {
         if (v == start) {
-            initIntent();
-            startService(intentTimer);
-            stopText.setText("Timer started." );
+            StartTime = SystemClock.uptimeMillis();
+            handler.postDelayed(runnable, 0);
         }
         else if (v == stop) {
-            initIntent();
-            stopService(intentTimer);
-            stopText.setText("Timer stopped.");
+            TimeBuff += MillisecondTime;
+            handler.removeCallbacks(runnable);
         }
         else if (v == saveProgress) {
-            initIntent();
-            stopService(intentTimer);
-            stopText.setText("Timer stopped.");
-
             saveProgress();
         }
     }
 
-    public void initIntent() {
-        intentTimer = new Intent(this, StopwatchService.class);
-        intentTimer.putExtra("receiver", resultReceiver);
-    }
-
     private void saveProgress() {
-        String counterTime = (String) counterText.getText();
-        int courseTimeSecond = Integer.parseInt(counterTime);
-
         Intent data = new Intent();
         data.putExtra(EXTRA_COURSE_NAME, courseName);
         data.putExtra(EXTRA_TARGET_TIME, targetSecond);
-        data.putExtra(EXTRA_TOTAL_TIME, totalTime + courseTimeSecond);
+        data.putExtra(EXTRA_TOTAL_TIME, totalTime + Seconds);
 
         int id = getIntent().getIntExtra(EXTRA_COURSE_ID, -1);
         if (id != -1) {
             data.putExtra(EXTRA_COURSE_ID, id);
         }
-
         setResult(RESULT_OK, data);
         finish();
     }
 
-
-    class UpdateUI implements Runnable {
-        String updateString;
-
-        public UpdateUI(String updateString) {
-            this.updateString = updateString;
-        }
-        public void run() {
-            counterText.setText(updateString);
-        }
-    }
-
-    class MyResultReceiver extends ResultReceiver {
-        public MyResultReceiver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-
-            if(resultCode == Integer.MAX_VALUE){
-                runOnUiThread(new UpdateUI(resultData.getString("start")));
-            }
-            else {
-                runOnUiThread(new UpdateUI("" + resultCode));
-            }
-        }
-    }
 }

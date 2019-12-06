@@ -5,12 +5,13 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Environment;
 
-import java.io.File;
+import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class DownloadService extends IntentService {
 
@@ -29,49 +30,33 @@ public class DownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String urlPath = intent.getStringExtra(URL);
         String fileName = intent.getStringExtra(FILENAME);
-        File output = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                fileName + ".pdf");
-        if (output.exists()) {
-            output.delete();
-        }
+        String outputFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + fileName;
 
-        InputStream stream = null;
-        FileOutputStream fos = null;
         try {
+            URL url = new URL(urlPath);
+            URLConnection connection = url.openConnection();
+            connection.connect();
 
-            java.net.URL url = new URL(urlPath);
-            stream = url.openConnection().getInputStream();
-            InputStreamReader reader = new InputStreamReader(stream);
-            fos = new FileOutputStream(output.getPath());
-            int next = -1;
-            while ((next = reader.read()) != -1) {
-                fos.write(next);
+            InputStream input = new BufferedInputStream(connection.getInputStream());
+            OutputStream output = new FileOutputStream(outputFileName);
+
+            byte data[] = new byte[1024];
+            int count;
+
+            while ((count = input.read(data)) != -1) {
+                output.write(data, 0, count);
             }
+
+            output.flush();
+            output.close();
+            input.close();
             result = Activity.RESULT_OK;
 
-        }
-        catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        finally {
-            if (stream != null) {
-                try {
-                    stream.close();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        publishResults(output.getAbsolutePath(), result);
+
+        publishResults(outputFileName, result);
     }
 
     private void publishResults(String outputPath, int result) {

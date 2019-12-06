@@ -74,6 +74,17 @@ public class AccountActivity extends MainActivity {
         }
     };
 
+    private void initService() {
+        Intent i = new Intent(this,
+                id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views.GreetingService.class);
+        getApplicationContext().bindService(i, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    private void releaseService() {
+        unbindService(connection);
+        connection = null;
+    }
+
     public void onClickSaveName() {
         if (service != null) {
             try {
@@ -326,13 +337,4 @@ public class AccountActivity extends MainActivity {
         }
     }
 
-    private void initService() {
-        Intent i = new Intent(this, id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views.GreetingService.class);
-        getApplicationContext().bindService(i, connection, Context.BIND_AUTO_CREATE);
-    }
-
-    private void releaseService() {
-        unbindService(connection);
-        connection = null;
-    }
 }

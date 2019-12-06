@@ -71,7 +71,6 @@
             </intent-filter>
         </activity>
         <service android:name=".views.GreetingService"/>
-        <service android:name=".views.StopwatchService"/>
         <service android:name=".views.DownloadService"/>
     </application>
 

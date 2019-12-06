@@ -89,25 +89,15 @@
             android:src="@drawable/ic_timer" />
 
         <TextView
-            android:id="@+id/counterText"
+            android:id="@+id/stopWatch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:text=" ? "
+            android:text="00:00:00"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/stopText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text=""
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textColor="@color/colorPrimary" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -128,7 +118,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorAccent"
-                android:text="Stop"
+                android:text="Pause"
                 android:textColor="@color/colorWhite" />
 
         </LinearLayout>
