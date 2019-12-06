@@ -1,12 +1,13 @@
 package id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views;
 
+import android.accounts.Account;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -16,29 +17,29 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.Parcelable;
-import android.os.RemoteException;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.R;
+import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.databinding.QuoteAdapter;
+import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.data.entity.Quote;
+import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.viewmodel.QuoteViewModel;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.IGreetingService;
-import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.R;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -50,10 +51,6 @@ public class AccountActivity extends MainActivity {
     Bitmap selectedImage;
     CircleImageView imageView;
     SharedPreferences.Editor prefsEditor;
-    EditText name;
-    TextView greetingText;
-    String userName;
-    String res;
 
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
@@ -62,46 +59,17 @@ public class AccountActivity extends MainActivity {
     private final static int ALL_PERMISSIONS_RESULT = 107;
     private final static int IMAGE_RESULT = 200;
 
-    IGreetingService service;
-    private ServiceConnection connection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName name, IBinder boundService) {
-            service = IGreetingService.Stub.asInterface(boundService);
-            Toast.makeText(AccountActivity.this, "Service connected", Toast.LENGTH_LONG).show();
-        }
-
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
-
-    private void initService() {
-        Intent i = new Intent(this,
-                id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views.GreetingService.class);
-        getApplicationContext().bindService(i, connection, Context.BIND_AUTO_CREATE);
-    }
-
-    private void releaseService() {
-        unbindService(connection);
-        connection = null;
-    }
-
-    public void onClickSaveName() {
-        if (service != null) {
-            try {
-                res = service.generateGreeting(userName);
-            }
-            catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-        greetingText.setText(res);
-    }
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private RecyclerView my_recycler_view;
+    private LinearLayoutManager layoutManager;
+    private QuoteAdapter adapter;
+    private Quote quote = new Quote();
+    QuoteViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        initService();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Account");
@@ -148,17 +116,24 @@ public class AccountActivity extends MainActivity {
             }
         }
 
-        Button saveName = findViewById(R.id.saveName);
-        saveName.setOnClickListener(new View.OnClickListener() {
+        // Quote
+        my_recycler_view = findViewById(R.id.quote_recycler_view);
+        layoutManager = new LinearLayoutManager(AccountActivity.this);
+        my_recycler_view.setLayoutManager(layoutManager);
+
+        adapter = new QuoteAdapter(AccountActivity.this, quote);
+        my_recycler_view.setAdapter(adapter);
+
+        model = ViewModelProviders.of(this).get(QuoteViewModel.class);
+        model.getRandomQuote().observe(this, new Observer<Quote>() {
             @Override
-            public void onClick(View view) {
-                onClickSaveName();
+            public void onChanged(@Nullable Quote quote) {
+                adapter = new QuoteAdapter(AccountActivity.this, quote);
+                my_recycler_view.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
         });
-        name = findViewById(R.id.ed_name);
-        userName = name.getText().toString();
 
-        greetingText = findViewById(R.id.greetingText);
     }
 
     @Override
@@ -167,10 +142,6 @@ public class AccountActivity extends MainActivity {
         if (selectedImage != null) {
             selectedImage.recycle();
         }
-        if (service != null) {
-            service = null;
-        }
-
     }
 
     public Intent getPickImageChooserIntent() {
@@ -245,7 +216,6 @@ public class AccountActivity extends MainActivity {
 
         if (isCamera) return getCaptureImageOutputUri().getPath();
         else return getPathFromURI(data.getData());
-
     }
 
     public String getImageFilePath(Intent data) {
@@ -336,5 +306,4 @@ public class AccountActivity extends MainActivity {
                 break;
         }
     }
-
 }

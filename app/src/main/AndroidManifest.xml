@@ -63,14 +63,9 @@
         </activity>
         <activity
             android:name=".views.AccountActivity"
-            android:label="Library"
+            android:label="Account"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <service android:name=".views.GreetingService"/>
         <service android:name=".views.DownloadService"/>
     </application>
 
