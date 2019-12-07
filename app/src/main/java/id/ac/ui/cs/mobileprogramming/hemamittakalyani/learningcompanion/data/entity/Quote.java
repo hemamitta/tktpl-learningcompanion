@@ -1,15 +1,15 @@
 package id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.data.entity;
 
 public class Quote {
-    private String quote;
     private String author;
+    private String content;
 
     public String getQuote() {
-        return quote;
+        return content;
     }
 
     public void setQuote(String quote) {
-        this.quote = quote;
+        this.content = quote;
     }
 
     public String getAuthor() {

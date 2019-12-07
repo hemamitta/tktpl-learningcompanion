@@ -30,7 +30,7 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull QuoteAdapter.ViewHolder viewHolder, int i) {
         viewHolder.quoteContent.setText(quote.getQuote());
-        viewHolder.quoteAuthor.setText(quote.getAuthor());
+        viewHolder.quoteAuthor.setText("- " + quote.getAuthor() + " -");
     }
 
     @Override

@@ -84,6 +84,38 @@ public class AccountActivity extends MainActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        loadQuote();
+        loadProfilePicture();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (selectedImage != null) {
+            selectedImage.recycle();
+        }
+    }
+
+    private void loadQuote() {
+        my_recycler_view = findViewById(R.id.quote_recycler_view);
+        layoutManager = new LinearLayoutManager(AccountActivity.this);
+        my_recycler_view.setLayoutManager(layoutManager);
+
+        adapter = new QuoteAdapter(AccountActivity.this, quote);
+        my_recycler_view.setAdapter(adapter);
+
+        model = ViewModelProviders.of(this).get(QuoteViewModel.class);
+        model.getRandomQuote().observe(this, new Observer<Quote>() {
+            @Override
+            public void onChanged(@Nullable Quote quote) {
+                adapter = new QuoteAdapter(AccountActivity.this, quote);
+                my_recycler_view.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void loadProfilePicture() {
         FloatingActionButton fab = findViewById(R.id.fabImage);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,33 +146,6 @@ public class AccountActivity extends MainActivity {
                 requestPermissions(permissionsToRequest.toArray(
                         new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
             }
-        }
-
-        // Quote
-        my_recycler_view = findViewById(R.id.quote_recycler_view);
-        layoutManager = new LinearLayoutManager(AccountActivity.this);
-        my_recycler_view.setLayoutManager(layoutManager);
-
-        adapter = new QuoteAdapter(AccountActivity.this, quote);
-        my_recycler_view.setAdapter(adapter);
-
-        model = ViewModelProviders.of(this).get(QuoteViewModel.class);
-        model.getRandomQuote().observe(this, new Observer<Quote>() {
-            @Override
-            public void onChanged(@Nullable Quote quote) {
-                adapter = new QuoteAdapter(AccountActivity.this, quote);
-                my_recycler_view.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (selectedImage != null) {
-            selectedImage.recycle();
         }
     }
 
