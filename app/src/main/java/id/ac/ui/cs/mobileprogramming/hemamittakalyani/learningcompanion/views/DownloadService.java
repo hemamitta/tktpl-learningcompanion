@@ -56,13 +56,14 @@ public class DownloadService extends IntentService {
             e.printStackTrace();
         }
 
-        publishResults(outputFileName, result);
+        publishResults(outputFileName, result, fileName);
     }
 
-    private void publishResults(String outputPath, int result) {
+    private void publishResults(String outputPath, int result, String fileName) {
         Intent intent = new Intent(NOTIFICATION);
         intent.putExtra(FILEPATH, outputPath);
         intent.putExtra(RESULT, result);
+        intent.putExtra(FILENAME, fileName);
         sendBroadcast(intent);
     }
 
