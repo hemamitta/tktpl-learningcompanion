@@ -16,7 +16,7 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Profile Picture"
+        android:contentDescription="@string/profilePicture"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
@@ -26,7 +26,7 @@
         android:text="@string/app_name"
         android:textColor="@color/colorWhite"
         android:textStyle="bold"
-        android:paddingLeft="16dp"
+        android:paddingHorizontal="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
 </LinearLayout>

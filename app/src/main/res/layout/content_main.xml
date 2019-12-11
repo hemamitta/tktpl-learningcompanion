@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:contentDescription="@string/learning_progress"
+                android:contentDescription="@string/learningProgress"
                 android:gravity="center"
                 android:src="@drawable/ic_show_chart" />
 
@@ -83,7 +83,7 @@
                 android:gravity="center"
                 android:textSize="20sp"
                 android:textColor="@color/colorWhite"
-                android:text="@string/learning_progress" />
+                android:text="@string/learningProgress" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

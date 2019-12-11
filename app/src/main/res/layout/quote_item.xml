@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="Quote"
+            android:text="@string/quote"
             android:textColor="@color/colorWhite"
             android:textStyle="italic"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textAlignment="center"
-            android:text="Author"
+            android:text="@string/author"
             android:textColor="@color/colorWhite"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 

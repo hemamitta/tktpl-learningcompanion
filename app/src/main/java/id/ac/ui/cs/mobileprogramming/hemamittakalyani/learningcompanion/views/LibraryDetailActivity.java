@@ -161,7 +161,7 @@ public class LibraryDetailActivity extends AppCompatActivity  {
     private final Handler toastHandlerFail = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Toast.makeText(getApplicationContext(), "Download failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.downloadFailed, Toast.LENGTH_LONG).show();
         }
     };
 
@@ -173,7 +173,7 @@ public class LibraryDetailActivity extends AppCompatActivity  {
         intent.putExtra(DownloadService.FILENAME, title);
         intent.putExtra(DownloadService.URL, pdfUrl);
         startService(intent);
-        Toast.makeText(LibraryDetailActivity.this, "Download is starting...", Toast.LENGTH_LONG).show();
+        Toast.makeText(LibraryDetailActivity.this, R.string.downloadStarting, Toast.LENGTH_LONG).show();
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -200,8 +200,8 @@ public class LibraryDetailActivity extends AppCompatActivity  {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         builder.setContentIntent(contentIntent);
-        builder.setContentTitle("Download completed: " + filename);
-        builder.setContentText("Tap to open file");
+        builder.setContentTitle(R.string.downloadCompleted + filename);
+        builder.setContentText(R.string.tapToOpenFile + "");
         builder.setSmallIcon(R.drawable.ic_learning_companion_foreground);
         builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_learning_companion_foreground));
         Notification notification = builder.build();

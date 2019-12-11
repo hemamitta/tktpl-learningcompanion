@@ -32,17 +32,17 @@ public class LearningProgressActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learning_progress);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Learning Progress");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.learningProgress);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Add Course
@@ -97,14 +97,14 @@ public class LearningProgressActivity extends MainActivity {
             Course course = new Course(courseName, targetMinute, totalTime);
             courseViewModel.insert(course);
 
-            Toast.makeText(this, "Course saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.courseSaved, Toast.LENGTH_SHORT).show();
         }
 
         else if (requestCode == EDIT_COURSE_REQUEST && resultCode == RESULT_OK) {
             int id = data.getIntExtra(CourseProgressActivity.EXTRA_COURSE_ID, -1);
 
             if (id == -1) {
-                Toast.makeText(this, "Course can't be updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.courseCantBeUpdated, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -116,11 +116,11 @@ public class LearningProgressActivity extends MainActivity {
             course.setCourseId(id);
             courseViewModel.update(course);
 
-            Toast.makeText(this, "Course progress updated", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.courseProgressUpdated, Toast.LENGTH_SHORT).show();
         }
 
         else if (requestCode == ADD_COURSE_REQUEST) {
-            Toast.makeText(this, "Course not saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.courseNotSaved, Toast.LENGTH_SHORT).show();
         }
 
     }

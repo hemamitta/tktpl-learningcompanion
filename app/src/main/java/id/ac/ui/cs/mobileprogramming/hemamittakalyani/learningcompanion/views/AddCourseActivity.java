@@ -33,7 +33,7 @@ public class AddCourseActivity extends AppCompatActivity {
         editTextTargetMinute = findViewById(R.id.inTargetMinute);
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-        setTitle("Add Course");
+        setTitle(R.string.addCourse);
     }
 
     private void saveCourse() {
@@ -41,7 +41,7 @@ public class AddCourseActivity extends AppCompatActivity {
         String targetMin = editTextTargetMinute.getText().toString();
 
         if (courseName.trim().isEmpty() || targetMin.trim().isEmpty()) {
-            Toast.makeText(AddCourseActivity.this, "Please fill all the field", Toast.LENGTH_SHORT);
+            Toast.makeText(AddCourseActivity.this, R.string.fillAllField, Toast.LENGTH_SHORT);
             return;
         }
 

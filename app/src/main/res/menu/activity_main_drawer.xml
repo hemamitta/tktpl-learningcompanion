@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_learning_progress"
             android:icon="@drawable/ic_show_chart"
-            android:title="@string/learning_progress" />
+            android:title="@string/learningProgress" />
         <item
             android:id="@+id/nav_account"
             android:icon="@drawable/ic_person"

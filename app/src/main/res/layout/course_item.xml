@@ -20,17 +20,17 @@
             android:layout_height="32dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:contentDescription="@string/learning_progress"
+            android:contentDescription="@string/learningProgress"
             android:src="@drawable/ic_insert_chart" />
 
         <TextView
             android:id="@+id/text_view_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"
-            android:layout_toRightOf="@id/icon"
+            android:text="@string/titleText"
+            android:layout_toEndOf="@id/icon"
             android:layout_centerVertical="true"
-            android:paddingLeft="8dp"
+            android:paddingHorizontal="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:maxLines="1"
             android:ellipsize="end" />

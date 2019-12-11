@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Learning Companion</string>
+    <string name="navigation_drawer_open">Buka navigation drawer</string>
+    <string name="navigation_drawer_close">Tutup navigation drawer</string>
+    <string name="learningProgress">Progres Belajar</string>
+    <string name="library">Perpustakaan</string>
+    <string name="addCourse">Tambah Pelajaran</string>
+    <string name="account">Akun</string>
+    <string name="targetMinutesPerWeek">Target per minggu (menit)</string>
+    <string name="courseName">Nama Pelajaran</string>
+    <string name="save">Simpan</string>
+    <string name="targetTimeWords">Target waktu belajarmu per minggu:</string>
+    <string name="totalTimeWords">Total waktu belajarmu minggu ini:</string>
+    <string name="progressTimeWords">Progres kamu:</string>
+    <string name="startStudy">MULAI BELAJAR</string>
+    <string name="saveProgress">Simpan Progres</string>
+    <string name="pause">Jeda</string>
+    <string name="start">Mulai</string>
+    <string name="stopwatchInitial">00:00:00</string>
+    <string name="bookTitle">Judul Buku</string>
+    <string name="titleText">Judul</string>
+    <string name="profilePicture">Foto Profil</string>
+    <string name="author">Penulis</string>
+    <string name="quote">Kutipan</string>
+    <string name="courseCantBeUpdated">Pelajaran tidak dapat diperbarui</string>
+    <string name="courseSaved">Pelajaran disimpan</string>
+    <string name="courseNotSaved">Pelajaran tidak disimpan</string>
+    <string name="courseProgressUpdated">Proges pelajaran diperbarui</string>
+    <string name="downloadCompleted">Download selesai: </string>
+    <string name="tapToOpenFile">Ketuk untuk membuka file</string>
+    <string name="downloadFailed">Download gagal</string>
+    <string name="downloadStarting">Download dimulai...</string>
+    <string name="fillAllField">Silakan isi semua baris</string>
+</resources>

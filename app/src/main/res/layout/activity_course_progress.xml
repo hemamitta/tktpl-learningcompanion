@@ -85,7 +85,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginBottom="@dimen/nav_header_vertical_spacing"
-            android:contentDescription="@string/learning_progress"
+            android:contentDescription="@string/learningProgress"
             android:src="@drawable/ic_timer" />
 
         <TextView
@@ -93,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:text="00:00:00"
+            android:text="@string/stopwatchInitial"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="@color/colorPrimary"
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorAccent"
-                android:text="Start"
+                android:text="@string/start"
                 android:textColor="@color/colorWhite" />
 
             <Button
@@ -118,7 +118,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorAccent"
-                android:text="Pause"
+                android:text="@string/pause"
                 android:textColor="@color/colorWhite" />
 
         </LinearLayout>
@@ -128,7 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorAccent"
-            android:text="Save Progress"
+            android:text="@string/saveProgress"
             android:textColor="@color/colorWhite" />
 
     </LinearLayout>

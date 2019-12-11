@@ -72,7 +72,7 @@ public class AccountActivity extends MainActivity {
         setContentView(R.layout.activity_account);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Account");
+        toolbar.setTitle(R.string.account);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

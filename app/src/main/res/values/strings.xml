@@ -1,19 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Learning Companion</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="learning_progress">Learning Progress</string>
+    <string name="learningProgress">Learning Progress</string>
     <string name="library">Library</string>
     <string name="addCourse">Add Course</string>
     <string name="account">Account</string>
-    <string name="targetMinutesPerWeek">Target minutes per week</string>
+    <string name="targetMinutesPerWeek">Target per week (minute)</string>
     <string name="courseName">Course Name</string>
     <string name="save">Save</string>
-    <string name="targetTimeWords">Your target study time per week:</string>
-    <string name="totalTimeWords">Your total study time this week:</string>
+    <string name="targetTimeWords">Your target learning time per week:</string>
+    <string name="totalTimeWords">Your total learning time this week:</string>
     <string name="progressTimeWords">Your progress:</string>
-    <string name="startStudy">START STUDYING</string>
-    <string name="quote">"Never stop learning, because life never stops teaching."</string>
+    <string name="startStudy">START LEARNING</string>
+    <string name="saveProgress">Save Progress</string>
+    <string name="pause">Pause</string>
+    <string name="start">Start</string>
+    <string name="stopwatchInitial">00:00:00</string>
+    <string name="bookTitle">Book Title</string>
+    <string name="titleText">Title</string>
+    <string name="profilePicture">Profile Picture</string>
+    <string name="author">Author</string>
+    <string name="quote">Quote</string>
+    <string name="courseCantBeUpdated">Course cannot be updated</string>
+    <string name="courseSaved">Course saved</string>
+    <string name="courseNotSaved">Course not saved</string>
+    <string name="courseProgressUpdated">Course progress updated</string>
+    <string name="downloadCompleted">Download completed: </string>
+    <string name="tapToOpenFile">Tap to open file</string>
+    <string name="downloadFailed">Download failed</string>
+    <string name="downloadStarting">Download is starting...</string>
+    <string name="fillAllField">Please fill all the field</string>
 </resources>
-
-
