@@ -200,8 +200,8 @@ public class LibraryDetailActivity extends AppCompatActivity  {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         builder.setContentIntent(contentIntent);
-        builder.setContentTitle(R.string.downloadCompleted + filename);
-        builder.setContentText(R.string.tapToOpenFile + "");
+        builder.setContentTitle("Downloaded: " + filename);
+        builder.setContentText("Tap to open file");
         builder.setSmallIcon(R.drawable.ic_learning_companion_foreground);
         builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_learning_companion_foreground));
         Notification notification = builder.build();
