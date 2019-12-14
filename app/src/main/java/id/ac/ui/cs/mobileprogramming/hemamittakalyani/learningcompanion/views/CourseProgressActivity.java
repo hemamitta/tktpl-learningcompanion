@@ -36,6 +36,10 @@ public class CourseProgressActivity extends AppCompatActivity implements View.On
 
     DecimalFormat df = new DecimalFormat("#.###");
 
+    static {
+        System.loadLibrary("native-lib");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +57,10 @@ public class CourseProgressActivity extends AppCompatActivity implements View.On
         totalTime = intentCourse.getIntExtra(EXTRA_TOTAL_TIME, 0);
         totalTimeMinute = totalTime / 60.00;
 
-        targetTimeView.setText(Integer.toString(targetMinute) + " min / " + Integer.toString(targetSecond) + " sec");
-        totalTimeView.setText(df.format(totalTimeMinute) + " min / " + Integer.toString(totalTime) + " sec");
+        String targetTimeText= Integer.toString(targetMinute) + " min / " + Integer.toString(targetSecond) + " sec";
+        String totalTimeText = df.format(totalTimeMinute) + " min / " + Integer.toString(totalTime) + " sec";
+        targetTimeView.setText(targetTimeText);
+        totalTimeView.setText(totalTimeText);
         setTitle(courseName);
 
         start = findViewById(R.id.startButton);
@@ -68,8 +74,9 @@ public class CourseProgressActivity extends AppCompatActivity implements View.On
         stopWatch = findViewById(R.id.stopWatch);
         progressTimeText = findViewById(R.id.progressTime);
 
-        double progressInt = (totalTime * 1.0 / targetSecond * 1.0) * 100.0;
-        progressTimeText.setText(df.format(progressInt) + "%");
+        double progressInt = percentageFromJNI(totalTime, targetSecond);
+        String result = df.format(progressInt) + "%";
+        progressTimeText.setText(result);
 
         handler = new Handler() ;
     }
@@ -117,5 +124,7 @@ public class CourseProgressActivity extends AppCompatActivity implements View.On
         setResult(RESULT_OK, data);
         finish();
     }
+
+    public native double percentageFromJNI(int totalTime, int targetSecond);
 
 }
