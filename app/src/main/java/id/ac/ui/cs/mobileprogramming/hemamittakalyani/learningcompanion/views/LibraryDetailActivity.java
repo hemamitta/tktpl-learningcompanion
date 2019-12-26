@@ -180,6 +180,8 @@ public class LibraryDetailActivity extends AppCompatActivity  {
         intent.putExtra(DownloadService.URL, pdfUrl);
         startService(intent);
         Toast.makeText(LibraryDetailActivity.this, R.string.downloadStarting, Toast.LENGTH_LONG).show();
+
+        startProgressBar(book.getTitle());
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -216,6 +218,16 @@ public class LibraryDetailActivity extends AppCompatActivity  {
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(NOTIFICATION_ID, notification);
         NOTIFICATION_ID++;
+    }
+
+    private void startProgressBar(String title) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        builder.setSmallIcon(R.drawable.ic_learning_companion_foreground);
+        builder.setContentTitle("Downloading " + title);
+        builder.setProgress(0, 0, true);
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
     }
 
 
