@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:layout_gravity="center_vertical"
-    android:orientation="vertical"
-    android:paddingHorizontal="16dp"
-    tools:context=".views.LibraryDetailActivity" >
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:tools = "http://schemas.android.com/tools"
+    android:id = "@+id/swipeRefresh"
+    android:layout_width = "match_parent"
+    android:layout_height = "match_parent"
+    tools:context = ".views.LibraryDetailActivity">
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:contentDescription="@string/internetTitle"
-        android:layout_width="260dp"
-        android:layout_height="220dp"
-        android:scaleType="centerInside"
-        android:layout_gravity="center"
-        android:src="@drawable/no_internet" />
-
-    <TextView
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/noInternetTitle"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textAlignment="center" />
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/noInternetSubtitle"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center" />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:contentDescription="@string/internetTitle"
+            android:layout_width="260dp"
+            android:layout_height="220dp"
+            android:scaleType="centerInside"
+            android:layout_gravity="center"
+            android:src="@drawable/no_internet" />
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/noInternetTitle"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/noInternetSubtitle"
+            android:layout_marginTop="5dp"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>

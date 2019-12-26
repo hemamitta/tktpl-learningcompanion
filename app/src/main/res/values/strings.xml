@@ -43,5 +43,5 @@
     <string name="permissionGrantedAccount">Permission Granted. Now you can change profile picture.</string>
     <string name="permissionLibraryDetail">Permission Granted. Now you can download e-book.</string>
     <string name="noInternetTitle">No Internet Connection</string>
-    <string name="noInternetSubtitle">You can not download files. Please check your internet connection.</string>
+    <string name="noInternetSubtitle">You can not download files. Please check your internet connection. Pull down to reload.</string>
 </resources>

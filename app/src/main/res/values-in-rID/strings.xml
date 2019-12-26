@@ -43,5 +43,5 @@
     <string name="permissionGrantedAccount">Izin diberikan. Sekarang Anda dapat mengganti foto profil.</string>
     <string name="permissionLibraryDetail">Izin diberikan. Sekarang Anda dapat mengunduh e-book.</string>
     <string name="noInternetTitle">Tidak Ada Koneksi Internet</string>
-    <string name="noInternetSubtitle">Anda tidak dapat mengunduh file. Silakan periksa koneksi internet Anda.</string>
+    <string name="noInternetSubtitle">Anda tidak dapat mengunduh file. Silakan periksa koneksi internet Anda. Tarik ke bawah untuk memuat ulang.</string>
 </resources>

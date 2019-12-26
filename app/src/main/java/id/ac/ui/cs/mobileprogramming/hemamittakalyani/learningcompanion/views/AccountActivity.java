@@ -6,7 +6,9 @@ import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -16,7 +18,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.Parcelable;
+import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,9 +34,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.IGreetingService;
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.R;
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.databinding.QuoteAdapter;
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.data.entity.Quote;
@@ -63,7 +69,20 @@ public class AccountActivity extends MainActivity {
     private RecyclerView my_recycler_view;
     private QuoteAdapter adapter;
     private Quote quote = new Quote();
-    LinearLayout root;
+    private TextView greetingText;
+    private LinearLayout root;
+
+    IGreetingService service;
+    private ServiceConnection connection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName name, IBinder boundService) {
+            service = IGreetingService.Stub.asInterface(boundService);
+            generateGreeting();
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +102,12 @@ public class AccountActivity extends MainActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        root = findViewById(R.id.content_account_activity);
-
+        initService();
         loadQuote();
         loadProfilePicture();
+
+        root = findViewById(R.id.content_account_activity);
+        greetingText = findViewById(R.id.greetingText);
     }
 
     @Override
@@ -95,6 +116,24 @@ public class AccountActivity extends MainActivity {
         if (selectedImage != null) {
             selectedImage.recycle();
         }
+    }
+
+    private void initService() {
+        Intent i = new Intent(this, id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.views.GreetingService.class);
+        getApplicationContext().bindService(i, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    private void generateGreeting() {
+        String res = "";
+        if (service != null) {
+            try {
+                res = service.generateGreeting();
+            }
+            catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        greetingText.setText(res);
     }
 
     private boolean permissionGranted() {

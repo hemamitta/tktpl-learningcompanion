@@ -26,6 +26,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,7 +69,17 @@ public class LibraryDetailActivity extends AppCompatActivity  {
         if (!isNetworkAvailable()) {
             setContentView(R.layout.activity_library_detail_no_internet);
 
+            final SwipeRefreshLayout swipeRefresh = findViewById(R.id.swipeRefresh);
+            swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    finish();
+                    startActivity(getIntent());
+                    swipeRefresh.setRefreshing(false);
+                }
+            });
         }
+
         else {
             setContentView(R.layout.activity_library_detail);
             Intent intentCourse = getIntent();

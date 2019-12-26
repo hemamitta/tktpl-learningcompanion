@@ -76,6 +76,7 @@
             android:theme="@style/AppTheme">
         </activity>
         <service android:name=".views.DownloadService"/>
+        <service android:name=".views.GreetingService"/>
     </application>
 
 </manifest>
