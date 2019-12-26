@@ -69,6 +69,11 @@
             android:label="Account"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".views.PermissionActivity"
+            android:label="Permission"
+            android:theme="@style/AppTheme">
+        </activity>
         <service android:name=".views.DownloadService"/>
     </application>
 

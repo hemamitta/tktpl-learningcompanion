@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.R;
 import id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion.data.entity.Book;
@@ -64,7 +66,8 @@ public class LibraryDetailActivity extends AppCompatActivity  {
 
         Intent intentCourse = getIntent();
         String libraryName = intentCourse.getStringExtra(EXTRA_LIBRARY_NAME);
-        List<Book> bookList = ((List<Book>) getIntent().getExtras().getSerializable(EXTRA_BOOK_LIST));
+        @SuppressWarnings("unchecked")
+        List<Book> bookList = ((List<Book>) Objects.requireNonNull(getIntent().getExtras()).getSerializable(EXTRA_BOOK_LIST));
 
         setTitle(libraryName);
         scrollView = findViewById(R.id.activity_library_detail);
@@ -117,21 +120,20 @@ public class LibraryDetailActivity extends AppCompatActivity  {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0) {
-
                     boolean internetAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
 
                     if (internetAccepted && storageAccepted)
-                        Snackbar.make(scrollView, "Permission Granted. Now you can download e-book.", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(scrollView, R.string.permissionLibraryDetail, Snackbar.LENGTH_LONG).show();
                     else {
-                        Snackbar.make(scrollView, "Permission must be granted to download e-book.", Snackbar.LENGTH_LONG).show();
+                        Intent intent = new Intent(this, PermissionActivity.class);
+                        startActivity(intent);
                     }
                 }
-
                 break;
         }
     }
@@ -144,13 +146,7 @@ public class LibraryDetailActivity extends AppCompatActivity  {
             notificationChannel.enableLights(true);
             notificationChannel.enableVibration(true);
             notificationChannel.setLightColor(Color.BLUE);
-            notificationChannel.setVibrationPattern(new long[] {
-                    500,
-                    500,
-                    500,
-                    500,
-                    500
-            });
+            notificationChannel.setVibrationPattern(new long[] { 500, 500, 500, 500, 500 });
             notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

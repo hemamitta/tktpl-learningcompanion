@@ -32,4 +32,14 @@
     <string name="downloadFailed">Download failed</string>
     <string name="downloadStarting">Download is starting...</string>
     <string name="fillAllField">Please fill all the field</string>
+    <string name="permissionTitle">App\'s Permission</string>
+    <string name="permissionSubtitle">Why we need these permissions?</string>
+    <string name="internetTitle">Internet</string>
+    <string name="internetDesc">Allows the application to use the device\'s internet. This permission is used to download e-book files.</string>
+    <string name="externalStorageTitle">External Storage</string>
+    <string name="externalStorageDesc">Allows the application to read and write to the device\'s external storage. This permission is used to save e-book files and access photos to change your profile photo.</string>
+    <string name="cameraTitle">Camera</string>
+    <string name="cameraDesc">Allow application to use the device\'s camera. This permission is used to take your profile photo.</string>
+    <string name="permissionGrantedAccount">Permission Granted. Now you can change profile picture.</string>
+    <string name="permissionLibraryDetail">Permission Granted. Now you can download e-book.</string>
 </resources>

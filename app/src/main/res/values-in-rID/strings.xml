@@ -32,4 +32,14 @@
     <string name="downloadFailed">Download gagal</string>
     <string name="downloadStarting">Download dimulai...</string>
     <string name="fillAllField">Silakan isi semua baris</string>
+    <string name="permissionTitle">Izin Aplikasi</string>
+    <string name="permissionSubtitle">Mengapa kami membutuhkan izin ini?</string>
+    <string name="internetTitle">Internet</string>
+    <string name="internetDesc">Izinkan aplikasi untuk menggunakan internet perangkat. Izin ini digunakan untuk dapat mengunduh file e-book.</string>
+    <string name="externalStorageTitle">Penyimpanan Eksternal</string>
+    <string name="externalStorageDesc">Izinkan aplikasi untuk membaca dan menyimpan ke external storage perangkat. Izin ini digunakan untuk menyimpan file e-book dan mengakses galeri untuk mengganti foto profil Anda.</string>
+    <string name="cameraTitle">Kamera</string>
+    <string name="cameraDesc">Izinkan aplikasi untuk menggunakan kamera perangkat. Izin ini digunakan untuk mengambil foto profil Anda.</string>
+    <string name="permissionGrantedAccount">Izin diberikan. Sekarang Anda dapat mengganti foto profil.</string>
+    <string name="permissionLibraryDetail">Izin diberikan. Sekarang Anda dapat mengunduh e-book.</string>
 </resources>
