@@ -42,4 +42,6 @@
     <string name="cameraDesc">Allow application to use the device\'s camera. This permission is used to take your profile photo.</string>
     <string name="permissionGrantedAccount">Permission Granted. Now you can change profile picture.</string>
     <string name="permissionLibraryDetail">Permission Granted. Now you can download e-book.</string>
+    <string name="noInternetTitle">No Internet Connection</string>
+    <string name="noInternetSubtitle">You can not download files. Please check your internet connection.</string>
 </resources>

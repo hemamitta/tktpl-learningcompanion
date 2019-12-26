@@ -12,6 +12,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -62,30 +64,36 @@ public class LibraryDetailActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_library_detail);
 
-        Intent intentCourse = getIntent();
-        String libraryName = intentCourse.getStringExtra(EXTRA_LIBRARY_NAME);
-        @SuppressWarnings("unchecked")
-        List<Book> bookList = ((List<Book>) Objects.requireNonNull(getIntent().getExtras()).getSerializable(EXTRA_BOOK_LIST));
+        if (!isNetworkAvailable()) {
+            setContentView(R.layout.activity_library_detail_no_internet);
 
-        setTitle(libraryName);
-        scrollView = findViewById(R.id.activity_library_detail);
+        }
+        else {
+            setContentView(R.layout.activity_library_detail);
+            Intent intentCourse = getIntent();
+            String libraryName = intentCourse.getStringExtra(EXTRA_LIBRARY_NAME);
+            @SuppressWarnings("unchecked")
+            List<Book> bookList = ((List<Book>) Objects.requireNonNull(getIntent().getExtras()).getSerializable(EXTRA_BOOK_LIST));
 
-        // List of Book
-        RecyclerView recyclerView = findViewById(R.id.book_recycler_view);
-        BookAdapter adapter = new BookAdapter(bookList, new BookAdapter.OnItemClickListener() {
-            @Override public void onItemClick(Book book) {
-                onClickDownload(book);
-            }
-        });
+            setTitle(libraryName);
+            scrollView = findViewById(R.id.activity_library_detail);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LibraryDetailActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+            // List of Book
+            RecyclerView recyclerView = findViewById(R.id.book_recycler_view);
+            BookAdapter adapter = new BookAdapter(bookList, new BookAdapter.OnItemClickListener() {
+                @Override public void onItemClick(Book book) {
+                    onClickDownload(book);
+                }
+            });
 
-        // Notification Channel
-        initNotificationChannel();
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LibraryDetailActivity.this);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+
+            // Notification Channel
+            initNotificationChannel();
+        }
     }
 
     @Override
@@ -95,9 +103,11 @@ public class LibraryDetailActivity extends AppCompatActivity  {
                 DownloadService.NOTIFICATION));
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public void onClickDownload(Book book) {
