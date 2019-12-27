@@ -60,7 +60,6 @@ public class LibraryDetailActivity extends AppCompatActivity  {
     NotificationChannel notificationChannel;
 
     ScrollView scrollView;
-    String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,16 +182,26 @@ public class LibraryDetailActivity extends AppCompatActivity  {
     };
 
     public void proceedDownload(Book book) {
-        String title = book.getTitle().replaceAll("\\s+","") + ".pdf";
+        String filename = book.getTitle().replaceAll("\\s+","") + ".pdf";
         String pdfUrl = book.getPdfUrl();
 
+        // Progress bar
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        builder.setSmallIcon(R.drawable.ic_learning_companion_foreground);
+        builder.setContentTitle("Downloading " + filename);
+        builder.setProgress(0, 0, true);
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
+
+        // Download service
         Intent intent = new Intent(this, DownloadService.class);
-        intent.putExtra(DownloadService.FILENAME, title);
+        intent.putExtra(DownloadService.FILENAME, filename);
         intent.putExtra(DownloadService.URL, pdfUrl);
+        intent.putExtra(DownloadService.NOTIFICATION_ID, Integer.toString(NOTIFICATION_ID));
         startService(intent);
         Toast.makeText(LibraryDetailActivity.this, R.string.downloadStarting, Toast.LENGTH_LONG).show();
-
-        startProgressBar(book.getTitle());
+        NOTIFICATION_ID++;
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -201,10 +210,11 @@ public class LibraryDetailActivity extends AppCompatActivity  {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 String filename = bundle.getString(DownloadService.FILENAME);
-                path = bundle.getString(DownloadService.FILEPATH);
+                String path = bundle.getString(DownloadService.FILEPATH);
                 int resultCode = bundle.getInt(DownloadService.RESULT);
+                int notificationID = Integer.parseInt(Objects.requireNonNull(bundle.getString(DownloadService.NOTIFICATION_ID)));
                 if (resultCode == RESULT_OK) {
-                    displayNotification(filename);
+                    displayNotification(filename, path, notificationID);
                 }
                 else {
                     toastHandlerFail.sendEmptyMessage(0);
@@ -213,7 +223,7 @@ public class LibraryDetailActivity extends AppCompatActivity  {
         }
     };
 
-    private void displayNotification(String filename) {
+    private void displayNotification(String filename, String path,int notificationID) {
         Intent intent = getOpenFileIntent(getApplicationContext(), path);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -227,20 +237,9 @@ public class LibraryDetailActivity extends AppCompatActivity  {
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        notificationManagerCompat.notify(NOTIFICATION_ID, notification);
-        NOTIFICATION_ID++;
+        notificationManagerCompat.notify(notificationID, notification);
+
     }
-
-    private void startProgressBar(String title) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-        builder.setSmallIcon(R.drawable.ic_learning_companion_foreground);
-        builder.setContentTitle("Downloading " + title);
-        builder.setProgress(0, 0, true);
-
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
-    }
-
 
     public static Intent getOpenFileIntent(Context context, String path) {
         File file = new File(path);

@@ -20,6 +20,7 @@ public class DownloadService extends IntentService {
     public static final String FILENAME = "filename";
     public static final String FILEPATH = "filepath";
     public static final String RESULT = "result";
+    public static final String NOTIFICATION_ID = "0";
     public static final String NOTIFICATION = "id.ac.ui.cs.mobileprogramming.hemamittakalyani.learningcompanion";
 
     public DownloadService() {
@@ -30,6 +31,7 @@ public class DownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String urlPath = intent.getStringExtra(URL);
         String fileName = intent.getStringExtra(FILENAME);
+        String notificationID = intent.getStringExtra(NOTIFICATION_ID);
         String outputFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + fileName;
 
         try {
@@ -56,14 +58,15 @@ public class DownloadService extends IntentService {
             e.printStackTrace();
         }
 
-        publishResults(outputFileName, result, fileName);
+        publishResults(outputFileName, result, fileName, notificationID);
     }
 
-    private void publishResults(String outputPath, int result, String fileName) {
+    private void publishResults(String outputPath, int result, String fileName, String notificationID) {
         Intent intent = new Intent(NOTIFICATION);
         intent.putExtra(FILEPATH, outputPath);
         intent.putExtra(RESULT, result);
         intent.putExtra(FILENAME, fileName);
+        intent.putExtra(NOTIFICATION_ID, notificationID);
         sendBroadcast(intent);
     }
 
